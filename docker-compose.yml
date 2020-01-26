@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  auth:
+    image: "auth-service"
+    ports: 
+      - "3001:3000"
+  data:
+    image: "data-generator"
+    ports: 
+      - "3002:3000"
+  client:
+    image: "client-server"
+    ports: 
+      - "3003:3000"
+  # For now is it will be a static
+  # front-end:
+  #   image: "client-server"
+  #   ports: 
+  #     - "3003:3000"

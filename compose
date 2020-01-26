@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -e
+
+function run() {
+  case $1 in
+  "start")
+    echo "====== Build image for data generator ======"
+    cd main/data-generator && docker build -t data-generator . && cd ../..
+    echo "====== Build image for auth-service ======"
+    cd main/auth-service && docker build -t auth-service . && cd ../..
+    echo "====== Build image for client-server ======"
+    cd main/client-server && docker build -t client-server . && cd ../..
+    echo "====== Compose UP ======"
+    docker-compose up
+    ;;
+
+  esac
+}
+
+run "$@"
