@@ -1,14 +1,14 @@
 version: "3.7"
 services:
   auth:
-    container_name: "auth-service"
-    image: "auth-service"
+    container_name: "reporty-auth-service"
+    image: "reporty-auth-service"
     build: 
-      context: ./main/auth-service
+      context: ./main/reporty-auth-service
       dockerfile: Dockerfile
     volumes: 
-      - ./main/auth-service:/usr/src/app:cached
-      - ./main/auth-service/node_modules:/usr/src/app/node_modules:cached
+      - ./main/reporty-auth-service:/usr/src/app:cached
+      - ./main/reporty-auth-service/node_modules:/usr/src/app/node_modules:cached
     ports: 
       - "3001:3000"
   data:
@@ -23,14 +23,14 @@ services:
     ports: 
       - "3002:3000"
   client:
-    container_name: client-server
-    image: "client-server"
+    container_name: reporty-client-server
+    image: "reporty-client-server"
     build: 
-      context: ./main/client-server
+      context: ./main/reporty-client-server
       dockerfile: Dockerfile
     volumes: 
-      - ./main/client-server:/usr/src/app:cached
-      - ./main/client-server/node_modules:/usr/src/app/node_modules:cached
+      - ./main/reporty-client-server:/usr/src/app:cached
+      - ./main/reporty-client-server/node_modules:/usr/src/app/node_modules:cached
     ports: 
       - "3003:3000"
   # For now is it will be a static
