@@ -13,7 +13,6 @@ function run() {
     echo "====== Compose UP ======"
     docker-compose up
     ;;
-
   esac
 }
 

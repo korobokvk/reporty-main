@@ -1,15 +1,36 @@
 version: "3.7"
 services:
   auth:
+    container_name: "auth-service"
     image: "auth-service"
+    build: 
+      context: ./main/auth-service
+      dockerfile: Dockerfile
+    volumes: 
+      - ./main/auth-service:/usr/src/app:cached
+      - ./main/auth-service/node_modules:/usr/src/app/node_modules:cached
     ports: 
       - "3001:3000"
   data:
+    container_name: data-generator
     image: "data-generator"
+    build: 
+      context: ./main/data-generator
+      dockerfile: Dockerfile
+    volumes: 
+      - ./main/data-generator:/usr/src/app:cached
+      - ./main/data-generator/node_modules:/usr/src/app/node_modules:cached
     ports: 
       - "3002:3000"
   client:
+    container_name: client-server
     image: "client-server"
+    build: 
+      context: ./main/client-server
+      dockerfile: Dockerfile
+    volumes: 
+      - ./main/client-server:/usr/src/app:cached
+      - ./main/client-server/node_modules:/usr/src/app/node_modules:cached
     ports: 
       - "3003:3000"
   # For now is it will be a static
