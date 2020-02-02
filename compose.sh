@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-REPOSNAME=("data-generator" "reporty-auth-service" "reporty-client-server" "reporty-client-front-end")
-IMAGES_FOR_DEV=("data-generator" "reporty-auth-service" "reporty-client-server")
+REPOSNAME=("data-generator" "reporty-auth-service" "reporty-client-server" "reporty-client-front-end" "reporty-db-provider")
+IMAGES_FOR_DEV=("data-generator" "reporty-auth-service" "reporty-client-server", "reporty-db-provider")
 
 function clone() {
   for i in "${REPOSNAME[@]}"; 

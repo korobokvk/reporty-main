@@ -2,7 +2,6 @@ version: "3.7"
 services:
   auth:
     container_name: "reporty-auth-service"
-    image: "reporty-auth-service"
     build: 
       context: ./main/reporty-auth-service
       dockerfile: Dockerfile
@@ -11,20 +10,11 @@ services:
       - ./main/reporty-auth-service/node_modules:/usr/src/app/node_modules:cached
     ports: 
       - "3001:3000"
-  data:
-    container_name: data-generator
-    image: "data-generator"
-    build: 
-      context: ./main/data-generator
-      dockerfile: Dockerfile
-    volumes: 
-      - ./main/data-generator:/usr/src/app:cached
-      - ./main/data-generator/node_modules:/usr/src/app/node_modules:cached
-    ports: 
-      - "3002:3000"
+    restart: "on-failure"
+    links:
+      - provider
   client:
     container_name: reporty-client-server
-    image: "reporty-client-server"
     build: 
       context: ./main/reporty-client-server
       dockerfile: Dockerfile
@@ -33,8 +23,39 @@ services:
       - ./main/reporty-client-server/node_modules:/usr/src/app/node_modules:cached
     ports: 
       - "3003:3000"
-  # For now is it will be a static
-  # front-end:
-  #   image: "client-server"
-  #   ports: 
-  #     - "3003:3000"
+    restart: on-failure
+    links:
+      - provider
+      - auth
+  provider:
+    container_name: reporty-db-provider
+    build: 
+      context: ./main/reporty-db-provider
+      dockerfile: Dockerfile
+    volumes: 
+      - ./main/reporty-db-provider:/usr/src/app:cached
+      - ./main/reporty-db-provider/node_modules:/usr/src/app/node_modules:cached
+    restart: on-failure
+    links:
+      - postgres
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    volumes:
+      - ../db:/var/lib/postgresql/data
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+    ports:
+      - 5432:5432
+#It's dummy data for app 
+  data:
+    container_name: data-generator
+    build: 
+      context: ./main/data-generator
+      dockerfile: Dockerfile
+    volumes: 
+      - ./main/data-generator:/usr/src/app:cached
+      - ./main/data-generator/node_modules:/usr/src/app/node_modules:cached
+    ports: 
+      - "3002:3000"
+    restart: "on-failure"
