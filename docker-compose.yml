@@ -1,5 +1,27 @@
 version: "3.7"
 services:
+  api:
+    container_name: "reporty-client-service-api"
+    build:
+      context: ./main/reporty-client-service-api
+      dockerfile: Dockerfile.dev
+    volumes: 
+      - ./main/reporty-client-service-api:/usr/src/app:cached
+      - ./main/reporty-client-service-api/node_modules:/usr/src/app/node_modules:cached
+    ports: 
+      - "3030:3000"
+    restart: "on-failure"
+  service:
+    container_name: "reporty-client-service"
+    build:
+      context: ./main/reporty-client-service
+      dockerfile: Dockerfile.dev
+    volumes: 
+      - ./main/reporty-client-service:/usr/src/app:cached
+      - ./main/reporty-client-service/node_modules:/usr/src/app/node_modules:cached
+    ports: 
+      - "3040:3000"
+    restart: "on-failure"
   auth:
     container_name: "reporty-auth-service"
     build: 
@@ -9,24 +31,8 @@ services:
       - ./main/reporty-auth-service:/usr/src/app:cached
       - ./main/reporty-auth-service/node_modules:/usr/src/app/node_modules:cached
     ports: 
-      - "3001:3000"
+      - "3020:3000"
     restart: "on-failure"
-    links:
-      - provider
-  client:
-    container_name: reporty-client-server
-    build: 
-      context: ./main/reporty-client-server
-      dockerfile: Dockerfile
-    volumes: 
-      - ./main/reporty-client-server:/usr/src/app:cached
-      - ./main/reporty-client-server/node_modules:/usr/src/app/node_modules:cached
-    ports: 
-      - "3003:3000"
-    restart: on-failure
-    links:
-      - provider
-      - auth
   provider:
     container_name: reporty-db-provider
     build: 
@@ -36,8 +42,7 @@ services:
       - ./main/reporty-db-provider:/usr/src/app:cached
       - ./main/reporty-db-provider/node_modules:/usr/src/app/node_modules:cached
     restart: on-failure
-    links:
-      - postgres
+    port: 3010:3000
   postgres:
     image: postgres:latest
     container_name: postgres
@@ -47,7 +52,7 @@ services:
       - ./postgresql.conf:/etc/postgresql/postgresql.conf
     ports:
       - 5432:5432
-#It's dummy data for app 
+# #It's dummy data for app 
   data:
     container_name: data-generator
     build: 
