@@ -16,13 +16,6 @@ function clone() {
   fi
   done
 }
-function rebuild_images() {
-  for i in "${IMAGES_FOR_DEV[@]}";
-    do    
-      echo "====== Build image for $i ======"
-      cd main/"$i" && docker build -t "$i" . && cd ../..
-    done
-}
 
 function run_image_if_not_exist() {
   for i in "${IMAGES_FOR_DEV[@]}";
@@ -56,7 +49,7 @@ function run() {
     ;;
   "rebuild")
     echo "====== REBUILDING ======"
-    rebuild_images
+    rdocker_compose build
   esac
 }
 

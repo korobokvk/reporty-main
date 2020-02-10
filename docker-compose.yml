@@ -2,6 +2,8 @@ version: "3.7"
 services:
   api:
     container_name: "reporty-client-service-api"
+    environment: 
+      AUTH_SERVICE_URL: http://docker.for.mac.localhost:3020
     build:
       context: ./main/reporty-client-service-api
       dockerfile: Dockerfile.dev
@@ -26,7 +28,7 @@ services:
     container_name: "reporty-auth-service"
     build: 
       context: ./main/reporty-auth-service
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     volumes: 
       - ./main/reporty-auth-service:/usr/src/app:cached
       - ./main/reporty-auth-service/node_modules:/usr/src/app/node_modules:cached
@@ -42,7 +44,8 @@ services:
       - ./main/reporty-db-provider:/usr/src/app:cached
       - ./main/reporty-db-provider/node_modules:/usr/src/app/node_modules:cached
     restart: on-failure
-    port: 3010:3000
+    ports: 
+      - "3010:3000"
   postgres:
     image: postgres:latest
     container_name: postgres
@@ -51,7 +54,7 @@ services:
       - ../db:/var/lib/postgresql/data
       - ./postgresql.conf:/etc/postgresql/postgresql.conf
     ports:
-      - 5432:5432
+      - "5432:5432"
 # #It's dummy data for app 
   data:
     container_name: data-generator
