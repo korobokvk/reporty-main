@@ -49,7 +49,7 @@ function run() {
     ;;
   "rebuild")
     echo "====== REBUILDING ======"
-    rdocker_compose build
+    docker-compose build
   esac
 }
 
