@@ -50,6 +50,8 @@ function run() {
   "rebuild")
     echo "====== REBUILDING ======"
     docker-compose build
+  "terminate_all_docker_data")
+    docker system prune -a
   esac
 }
 

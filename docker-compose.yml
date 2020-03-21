@@ -2,14 +2,14 @@ version: "3"
 services:
   api:
     container_name: "reporty-client-service-api"
-    environment: 
-      AUTH_SERVICE_URL: host.docker.internal:3020
     build:
       context: ./main/reporty-client-service-api
       dockerfile: Dockerfile.dev
     volumes: 
-      - ./main/reporty-client-service-api:/usr/src/app:cached
-      - ./main/reporty-client-service-api/node_modules:/usr/src/app/node_modules:cached
+      - ./main/reporty-client-service-api/src:/usr/src/app/src:cached
+      # - ./main/reporty-client-service-api/node_modules:/usr/src/app/node_modules:cached
+    environment: 
+      - AUTH_SERVICE_URL=host.docker.internal:3020
     ports: 
       - 3030:3000
     restart: "on-failure"
@@ -35,7 +35,7 @@ services:
       - ./main/reporty-auth-service:/usr/src/app:cached
       - ./main/reporty-auth-service/node_modules:/usr/src/app/node_modules:cached
     environment: 
-      - DB_PROVIDER_URL: host.docker.internal:3010
+      - DB_PROVIDER_URL=host.docker.internal:3010
     ports: 
       - 3020:3000
     restart: "on-failure"
@@ -46,7 +46,8 @@ services:
       context: ./main/reporty-db-provider
       dockerfile: Dockerfile.dev
     environment: 
-      - DB_URL: 'host.docker.internal'
+      - DB_URL=host.docker.internal
+      - DEV_ENV=true
     volumes: 
       - ./main/reporty-db-provider:/usr/src/app:cached
       - ./main/reporty-db-provider/node_modules:/usr/src/app/node_modules:cached
@@ -61,7 +62,7 @@ services:
     environment: 
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=root
+      - POSTGRES_DB=database-1
     networks:
       - postgres
     ports:
