@@ -62,7 +62,7 @@ services:
     environment: 
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=database-1
+      - POSTGRES_DB=postgres
     networks:
       - postgres
     ports:
