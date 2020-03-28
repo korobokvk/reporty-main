@@ -2,19 +2,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth-deployment
+  labels:
+    service: auth-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-        app: auth-service
+        app: auth
   template:
     metadata:
       labels:
-        app: auth-service
+        app: auth
     spec:
       containers:
-      - name: auth-service
+      - name: auth
         image: korobokvk/reporty-auth-service:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 3020
+        - containerPort: 3000
+        env: 
+        - name: DB_SERVICE
+          value: "db-service:3000"

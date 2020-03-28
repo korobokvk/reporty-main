@@ -2,19 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: db-deployment
+  labels:
+    service: db-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-        app: db-service
+      app: db
   template:
     metadata:
       labels:
-        app: db-service
+        app: db
     spec:
       containers:
-      - name: db-service
+      - name: db
         image: korobokvk/reporty-db-service:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 3010 
+        - containerPort: 3000 
